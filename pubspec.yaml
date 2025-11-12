@@ -1,0 +1,16 @@
+name: get_shimmer
+description: A package to add getX shimmer effect for Flutter projects
+version: 0.0.1
+homepage: https://github.com/HsnAlidroos/get_shimmer
+
+environment:
+  sdk: '>=2.17.0 <4.0.0'
+  flutter: '>=1.9.1'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  get:
+dev_dependencies:
+  flutter_test:
+    sdk: flutter

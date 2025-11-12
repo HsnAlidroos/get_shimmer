@@ -1,0 +1,63 @@
+<!--
+This README describes the package. If you publish this package to pub.dev,
+this README's contents appear on the landing page for your package.
+
+For information about how to write a good package README, see the guide for
+[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
+
+For general information about developing packages, see the Dart guide for
+[creating packages](https://dart.dev/guides/libraries/create-packages)
+and the Flutter guide for
+[developing packages and plugins](https://flutter.dev/to/develop-packages).
+-->
+
+A small GetX-friendly Shimmer widget for Flutter.
+
+This package provides a lightweight Shimmer widget built using `Getx` for
+controller lifecycle and simple configuration. It uses a `ShaderMask` under the
+hood to render an animated gradient over a child widget.
+
+## Features
+
+Features
+- Shimmer effect using `ShaderMask` and `AnimationController`.
+- Uses `Get.put` for controller lifecycle, keeping widget code concise.
+
+## Getting started
+
+Getting started
+
+Add `get_shimmer` to your `pubspec.yaml` and import it:
+
+```dart
+import 'package:get_shimmer/get_shimmer.dart';
+```
+
+## Usage
+
+Usage example
+
+```dart
+Shimmer(
+	gradient: LinearGradient(colors: [Colors.grey, Colors.white, Colors.grey]),
+	child: Container(
+		width: double.infinity,
+		height: 16,
+		color: Colors.grey[300],
+	),
+)
+```
+
+Tip: set `enabled: false` to show the static placeholder without animation (useful
+in tests or when you want to conditionally disable shimmer).
+
+```dart
+const like = 'sample';
+```
+
+## Additional information
+
+Contributing
+
+Contributions are welcome. Please open issues or PRs on the repository.
+# get_shimmer
