@@ -35,7 +35,7 @@ class ShimmerController extends GetxController with GetTickerProviderStateMixin 
   }
 }
 
-class Shimmer extends StatelessWidget {
+class GetShimmer extends StatelessWidget {
   final Widget child;
   final Duration period;
   final ShimmerDirection direction;
@@ -43,7 +43,7 @@ class Shimmer extends StatelessWidget {
   final int loop;
   final bool enabled;
 
-  const Shimmer({
+  const GetShimmer({
     super.key,
     required this.child,
     required this.gradient,

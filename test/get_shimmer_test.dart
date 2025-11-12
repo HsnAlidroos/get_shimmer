@@ -11,7 +11,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: Shimmer(
+          body: GetShimmer(
             child: Container(width: 100, height: 20),
             gradient: gradient,
             enabled: false, // disable animation during test
@@ -21,7 +21,7 @@ void main() {
     );
 
     // The Shimmer exists in the widget tree
-    expect(find.byType(Shimmer), findsOneWidget);
+    expect(find.byType(GetShimmer), findsOneWidget);
     // The inner Container is present
     expect(find.byType(Container), findsOneWidget);
   });
