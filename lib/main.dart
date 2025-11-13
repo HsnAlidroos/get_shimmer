@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 
+/// An enum defines all supported directions of shimmer effect
 enum ShimmerDirection { ltr, rtl, ttb, btt }
 
-class ShimmerController extends GetxController with GetTickerProviderStateMixin {
-  late AnimationController controller;
-  RxDouble percent = 0.0.obs;
+/// Controller that drives shimmer progress using an [AnimationController].
+class GetShimmerController extends GetxController
+    with GetTickerProviderStateMixin {
+  late final AnimationController controller;
+  final RxDouble percent = 0.0.obs;
   final Duration period;
   final int loop;
   int _count = 0;
 
-  ShimmerController({required this.period, required this.loop}) {
+  GetShimmerController({required this.period, required this.loop}) {
     controller = AnimationController(vsync: this, duration: period)
       ..addListener(() => percent.value = controller.value)
       ..addStatusListener((status) {
@@ -35,6 +39,8 @@ class ShimmerController extends GetxController with GetTickerProviderStateMixin 
   }
 }
 
+/// Public GetShimmer widget. Stateless — animation is controlled by [GetShimmerController]
+@immutable
 class GetShimmer extends StatelessWidget {
   final Widget child;
   final Duration period;
@@ -53,65 +59,143 @@ class GetShimmer extends StatelessWidget {
     this.enabled = true,
   });
 
+  /// Convenience constructor that builds a linear gradient from base/highlight colors.
+  GetShimmer.fromColors({
+    super.key,
+    required this.child,
+    required Color baseColor,
+    required Color highlightColor,
+    this.period = const Duration(milliseconds: 1500),
+    this.direction = ShimmerDirection.ltr,
+    this.loop = 0,
+    this.enabled = true,
+  }) : gradient = LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.centerRight,
+            colors: <Color>[
+              baseColor,
+              baseColor,
+              highlightColor,
+              baseColor,
+              baseColor
+            ],
+            stops: const <double>[
+              0.0,
+              0.35,
+              0.5,
+              0.65,
+              1.0
+            ]);
+
   @override
   Widget build(BuildContext context) {
-    final shimmerController = Get.put(ShimmerController(period: period, loop: loop));
+    // Use a local controller instance registered with GetX. This mirrors the
+    // previous approach (keeps widget stateless while GetX owns the animation).
+    final shimmerController =
+        Get.put(GetShimmerController(period: period, loop: loop));
     if (enabled) shimmerController.start();
 
-    return Obx(() => _Shimmer(
-      direction: direction,
-      gradient: gradient,
-      percent: shimmerController.percent.value,
-      child: child,
-    ));
+    return Obx(() => _ShimmerRender(
+          direction: direction,
+          gradient: gradient,
+          percent: shimmerController.percent.value,
+          child: child,
+        ));
   }
 }
 
-class _Shimmer extends StatelessWidget {
-  final Widget child;
+@immutable
+class _ShimmerRender extends SingleChildRenderObjectWidget {
   final double percent;
   final ShimmerDirection direction;
   final Gradient gradient;
 
-  const _Shimmer({
-    required this.child,
+  const _ShimmerRender({
+    super.child,
     required this.percent,
     required this.direction,
     required this.gradient,
   });
 
   @override
-  Widget build(BuildContext context) {
-    return ShaderMask(
-      shaderCallback: (bounds) {
-        final width = bounds.width;
-        final height = bounds.height;
-        Rect rect;
-        double dx, dy;
+  _ShimmerFilter createRenderObject(BuildContext context) {
+    return _ShimmerFilter(percent, direction, gradient);
+  }
 
-        if (direction == ShimmerDirection.rtl) {
-          dx = _offset(width, -width, percent);
-          dy = 0.0;
-          rect = Rect.fromLTWH(dx - width, dy, 3 * width, height);
-        } else if (direction == ShimmerDirection.ttb) {
-          dx = 0.0;
-          dy = _offset(-height, height, percent);
-          rect = Rect.fromLTWH(dx, dy - height, width, 3 * height);
-        } else if (direction == ShimmerDirection.btt) {
-          dx = 0.0;
-          dy = _offset(height, -height, percent);
-          rect = Rect.fromLTWH(dx, dy - height, width, 3 * height);
-        } else {
-          dx = _offset(-width, width, percent);
-          dy = 0.0;
-          rect = Rect.fromLTWH(dx - width, dy, 3 * width, height);
-        }
+  @override
+  void updateRenderObject(BuildContext context, _ShimmerFilter shimmer) {
+    shimmer.percent = percent;
+    shimmer.gradient = gradient;
+    shimmer.direction = direction;
+  }
+}
 
-        return gradient.createShader(rect);
-      },
-      blendMode: BlendMode.srcIn,
-      child: child,
-    );
+class _ShimmerFilter extends RenderProxyBox {
+  ShimmerDirection _direction;
+  Gradient _gradient;
+  double _percent;
+
+  _ShimmerFilter(this._percent, this._direction, this._gradient);
+
+  @override
+  ShaderMaskLayer? get layer => super.layer as ShaderMaskLayer?;
+
+  @override
+  bool get alwaysNeedsCompositing => child != null;
+
+  set percent(double newValue) {
+    if (newValue == _percent) return;
+    _percent = newValue;
+    markNeedsPaint();
+  }
+
+  set gradient(Gradient newValue) {
+    if (newValue == _gradient) return;
+    _gradient = newValue;
+    markNeedsPaint();
+  }
+
+  set direction(ShimmerDirection newDirection) {
+    if (newDirection == _direction) return;
+    _direction = newDirection;
+    markNeedsLayout();
+  }
+
+  @override
+  void paint(PaintingContext context, Offset offset) {
+    if (child != null) {
+      assert(needsCompositing);
+
+      final double width = child!.size.width;
+      final double height = child!.size.height;
+      Rect rect;
+      double dx, dy;
+      if (_direction == ShimmerDirection.rtl) {
+        dx = _offset(width, -width, _percent);
+        dy = 0.0;
+        rect = Rect.fromLTWH(dx - width, dy, 3 * width, height);
+      } else if (_direction == ShimmerDirection.ttb) {
+        dx = 0.0;
+        dy = _offset(-height, height, _percent);
+        rect = Rect.fromLTWH(dx, dy - height, width, 3 * height);
+      } else if (_direction == ShimmerDirection.btt) {
+        dx = 0.0;
+        dy = _offset(height, -height, _percent);
+        rect = Rect.fromLTWH(dx, dy - height, width, 3 * height);
+      } else {
+        dx = _offset(-width, width, _percent);
+        dy = 0.0;
+        rect = Rect.fromLTWH(dx - width, dy, 3 * width, height);
+      }
+      layer ??= ShaderMaskLayer();
+      layer!
+        ..shader = _gradient.createShader(rect)
+        ..maskRect = offset & size
+        ..blendMode = BlendMode.srcIn;
+      context.pushLayer(layer!, super.paint, offset);
+    } else {
+      layer = null;
+    }
   }
 
   double _offset(double start, double end, double percent) {
