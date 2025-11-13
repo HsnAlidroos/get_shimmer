@@ -38,12 +38,33 @@ import 'package:get_shimmer/get_shimmer.dart';
 Usage example
 
 ```dart
-Shimmer(
-	gradient: LinearGradient(colors: [Colors.grey, Colors.white, Colors.grey]),
-	child: Container(
-		width: double.infinity,
-		height: 16,
-		color: Colors.grey[300],
+// Using the convenience constructor demonstrated in the example
+GetShimmer.fromColors(
+	baseColor: Colors.grey.shade300,
+	highlightColor: Colors.grey.shade100,
+	child: Column(
+		children: [
+			ListTile(
+				leading: CircleAvatar(radius: 30),
+				title: Container(
+					margin: EdgeInsets.only(right: 100),
+					width: double.infinity,
+					height: 12,
+					decoration: BoxDecoration(
+						color: Colors.white,
+						borderRadius: BorderRadius.circular(8),
+					),
+				),
+				subtitle: Container(
+					width: double.infinity,
+					height: 10,
+					decoration: BoxDecoration(
+						color: Colors.white,
+						borderRadius: BorderRadius.circular(8),
+					),
+				),
+			),
+		],
 	),
 )
 ```
