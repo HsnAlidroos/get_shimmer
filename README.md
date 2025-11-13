@@ -40,33 +40,14 @@ Usage example
 ```dart
 // Using the convenience constructor demonstrated in the example
 GetShimmer.fromColors(
-	baseColor: Colors.grey.shade300,
-	highlightColor: Colors.grey.shade100,
-	child: Column(
-		children: [
-			ListTile(
-				leading: CircleAvatar(radius: 30),
-				title: Container(
-					margin: EdgeInsets.only(right: 100),
-					width: double.infinity,
-					height: 12,
-					decoration: BoxDecoration(
-						color: Colors.white,
-						borderRadius: BorderRadius.circular(8),
-					),
-				),
-				subtitle: Container(
-					width: double.infinity,
-					height: 10,
-					decoration: BoxDecoration(
-						color: Colors.white,
-						borderRadius: BorderRadius.circular(8),
-					),
-				),
-			),
-		],
-	),
-)
+    baseColor: Colors.grey.shade300,
+    highlightColor: Colors.grey.shade100,
+    child: Container(
+        height: 200,
+        width: double.infinity,
+        color: Colors.white,
+        ),
+);
 ```
 
 Tip: set `enabled: false` to show the static placeholder without animation (useful
