@@ -1,17 +1,11 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
-
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
 
 A small GetX-friendly Shimmer widget for Flutter.
+
+
+<p>
+    <img src="https://github.com/HsnAlidroos/get_shimmer/blob/master/screenshots/loading_list.gif?raw=true"/>
+    <img src="https://github.com/hnvn/flutter_shimmer/blob/master/screenshots/slide_to_unlock.gif?raw=true"/>
+</p>
 
 This package provides a lightweight Shimmer widget built using `Getx` for
 controller lifecycle and simple configuration. It uses a `ShaderMask` under the
