@@ -3,8 +3,8 @@ A small GetX-friendly Shimmer widget for Flutter.
 
 
 <p>
-    <img src="https://github.com/HsnAlidroos/get_shimmer/blob/master/screenshots/loading_list.gif?raw=true"/>
-     <img src="https://github.com/HsnAlidroos/get_shimmer/blob/master/screenshots/loading_list_with_move.gif?raw=true"/>
+    <img src="https://github.com/HsnAlidroos/get_shimmer/blob/main/screenshots/loading_list.gif?raw=true"/>
+     <img src="https://github.com/HsnAlidroos/get_shimmer/blob/main/screenshots/loading_list_with_move.gif?raw=true"/>
 </p>
 
 This package provides a lightweight Shimmer widget built using `Getx` for
