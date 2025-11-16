@@ -1,20 +1,18 @@
 /// Get Shimmer
 ///
-/// Public export for the package. 
+/// Public export for the package.
 library get_shimmer;
-
-
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
+import 'package:flutter/scheduler.dart';
 
 /// An enum defines all supported directions of shimmer effect
 enum ShimmerDirection { ltr, rtl, ttb, btt }
 
 /// Controller that drives shimmer progress using an [AnimationController].
-class GetShimmerController extends GetxController
-    with GetTickerProviderStateMixin {
+class GetShimmerController extends GetxController implements TickerProvider {
   late final AnimationController controller;
   final RxDouble percent = 0.0.obs;
   final Duration period;
@@ -35,6 +33,10 @@ class GetShimmerController extends GetxController
         }
       });
   }
+
+  @override
+  Ticker createTicker(TickerCallback onTick) =>
+      Ticker(onTick, debugLabel: 'GetShimmerController');
 
   void start() => controller.forward();
   void stop() => controller.stop();
