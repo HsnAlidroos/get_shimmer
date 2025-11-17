@@ -71,22 +71,22 @@ class GetShimmer extends StatelessWidget {
   /// Convenience constructor that builds a linear gradient from base/highlight colors.
   GetShimmer.fromColors({
     super.key,
-    required this.child,
-    required Color baseColor,
-    required Color highlightColor,
+     Color? baseColor,
+     Color? highlightColor,
     this.period = const Duration(milliseconds: 1500),
     this.direction = ShimmerDirection.ltr,
     this.loop = 0,
     this.enabled = true,
+    required this.child,
   }) : gradient = LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.centerRight,
             colors: <Color>[
-              baseColor,
-              baseColor,
-              highlightColor,
-              baseColor,
-              baseColor
+              baseColor ?? Colors.blue.shade100,
+              baseColor ?? Colors.blue.shade100,
+              highlightColor ?? Colors.blue.shade300,
+              baseColor ?? Colors.blue.shade100,
+              baseColor ?? Colors.blue.shade100
             ],
             stops: const <double>[
               0.0,
