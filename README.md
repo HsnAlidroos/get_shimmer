@@ -34,8 +34,8 @@ Usage example
 ```dart
 // Using the convenience constructor demonstrated in the example
 GetShimmer.fromColors(
-    baseColor: Colors.grey.shade300,
-    highlightColor: Colors.grey.shade100,
+   // baseColor: Colors.grey.shade300, 
+   // highlightColor: Colors.grey.shade100, 
     child: Container(
         height: 200,
         width: double.infinity,

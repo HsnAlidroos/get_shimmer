@@ -16,13 +16,74 @@ class MyApp extends StatelessWidget {
       title: 'Get Shimmer Demo',
       theme: ThemeData(primarySwatch: Colors.blue),
       home: Scaffold(
-        appBar: AppBar(title: Text('Get Shimmer Demo Home')),
+        appBar: AppBar(
+          forceMaterialTransparency: true,
+          centerTitle: true,
+          title: Text('GetShimmer Demo'),
+          leading: IconButton.outlined(
+            onPressed: () {
+              Get.defaultDialog(
+                title: 'User Info',
+                content: Column(
+                  spacing: 8,
+                  children: [
+                    Row(
+                      children: [
+                        Text('Name: '),
+                        GetShimmer.fromColors(
+                          child: Container(
+                            height: 10,
+                            width: 100,
+                            decoration: BoxDecoration(color: Colors.white),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Text('Age: '),
+                        GetShimmer.fromColors(
+                          child: Container(
+                            height: 10,
+                            width: 100,
+                            decoration: BoxDecoration(color: Colors.white),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Text('City: '),
+                        GetShimmer.fromColors(
+                          child: Container(
+                            height: 10,
+                            width: 100,
+                            decoration: BoxDecoration(color: Colors.white),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                confirm: SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () => Get.back(),
+                    child: Text('Exit'),
+                  ),
+                ),
+              );
+            },
+            icon: Icon(Icons.person),
+          ),
+        ),
         body: ListView.builder(
           itemCount: 20,
           itemBuilder: (context, index) {
             return GetShimmer.fromColors(
-              baseColor: Colors.grey.shade300,
-              highlightColor: Colors.grey.shade100,
+              // in 0.0.6 the baseColor and highlightColor not required
+              // baseColor: Colors.grey.shade300,
+              // highlightColor: Colors.grey.shade100,
               child: Column(
                 children: [
                   ListTile(
