@@ -1,6 +1,8 @@
 
 A small GetX-friendly Shimmer widget for Flutter.
 
+<!-- Open Graph / social preview image -->
+![GetShimmer OG image](screenshots/og_image.svg)
 
 <p>
     <img src="https://github.com/HsnAlidroos/get_shimmer/blob/main/screenshots/loading_list.gif?raw=true"/>
