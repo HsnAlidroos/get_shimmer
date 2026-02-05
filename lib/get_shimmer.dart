@@ -18,6 +18,7 @@ class GetShimmerController extends GetxController implements TickerProvider {
   final Duration period;
   final int loop;
   int _count = 0;
+  final Set<Ticker> _tickers = {};
 
   GetShimmerController({required this.period, required this.loop}) {
     controller = AnimationController(vsync: this, duration: period)
@@ -35,14 +36,20 @@ class GetShimmerController extends GetxController implements TickerProvider {
   }
 
   @override
-  Ticker createTicker(TickerCallback onTick) =>
-      Ticker(onTick, debugLabel: 'GetShimmerController');
+  Ticker createTicker(TickerCallback onTick) {
+    final ticker = Ticker(onTick, debugLabel: 'GetShimmerController');
+    _tickers.add(ticker);
+    return ticker;
+  }
 
   void start() => controller.forward();
   void stop() => controller.stop();
 
   @override
   void onClose() {
+    for (final ticker in _tickers) {
+      ticker.dispose();
+    }
     controller.dispose();
     super.onClose();
   }
@@ -71,45 +78,47 @@ class GetShimmer extends StatelessWidget {
   /// Convenience constructor that builds a linear gradient from base/highlight colors.
   GetShimmer.fromColors({
     super.key,
-     Color? baseColor,
-     Color? highlightColor,
+    Color? baseColor,
+    Color? highlightColor,
     this.period = const Duration(milliseconds: 1500),
     this.direction = ShimmerDirection.ltr,
     this.loop = 0,
     this.enabled = true,
     required this.child,
   }) : gradient = LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.centerRight,
-            colors: <Color>[
-              baseColor ?? Colors.blue.shade100,
-              baseColor ?? Colors.blue.shade100,
-              highlightColor ?? Colors.blue.shade300,
-              baseColor ?? Colors.blue.shade100,
-              baseColor ?? Colors.blue.shade100
-            ],
-            stops: const <double>[
-              0.0,
-              0.35,
-              0.5,
-              0.65,
-              1.0
-            ]);
+          begin: Alignment.topLeft,
+          end: Alignment.centerRight,
+          colors: <Color>[
+            baseColor ?? Colors.grey.shade300,
+            baseColor ?? Colors.grey.shade300,
+            highlightColor ?? Colors.grey.shade100,
+            baseColor ?? Colors.grey.shade300,
+            baseColor ?? Colors.grey.shade300,
+          ],
+          stops: const <double>[0.0, 0.35, 0.5, 0.65, 1.0],
+        );
 
   @override
   Widget build(BuildContext context) {
-    // Use a local controller instance registered with GetX. This mirrors the
-    // previous approach (keeps widget stateless while GetX owns the animation).
-    final shimmerController =
-        Get.put(GetShimmerController(period: period, loop: loop));
-    if (enabled) shimmerController.start();
+    // Return child directly when disabled to avoid controller overhead
+    if (!enabled) return child;
 
-    return Obx(() => _ShimmerRender(
-          direction: direction,
-          gradient: gradient,
-          percent: shimmerController.percent.value,
-          child: child,
-        ));
+    // Use a unique tag to allow multiple independent shimmer instances
+    final tag = key?.toString() ?? '${identityHashCode(this)}';
+    final shimmerController = Get.put(
+      GetShimmerController(period: period, loop: loop),
+      tag: tag,
+    );
+    shimmerController.start();
+
+    return Obx(
+      () => _ShimmerRender(
+        direction: direction,
+        gradient: gradient,
+        percent: shimmerController.percent.value,
+        child: child,
+      ),
+    );
   }
 }
 
@@ -144,10 +153,18 @@ class _ShimmerFilter extends RenderProxyBox {
   Gradient _gradient;
   double _percent;
 
+  // Shader caching for performance
+  Shader? _cachedShader;
+  Rect? _cachedRect;
+  Gradient? _cachedGradient;
+
   _ShimmerFilter(this._percent, this._direction, this._gradient);
 
   @override
   ShaderMaskLayer? get layer => super.layer as ShaderMaskLayer?;
+
+  @override
+  bool get isRepaintBoundary => true;
 
   @override
   bool get alwaysNeedsCompositing => child != null;
@@ -197,8 +214,16 @@ class _ShimmerFilter extends RenderProxyBox {
         rect = Rect.fromLTWH(dx - width, dy, 3 * width, height);
       }
       layer ??= ShaderMaskLayer();
+
+      // Cache shader when rect/gradient unchanged for better performance
+      if (_cachedRect != rect || _cachedGradient != _gradient) {
+        _cachedShader = _gradient.createShader(rect);
+        _cachedRect = rect;
+        _cachedGradient = _gradient;
+      }
+
       layer!
-        ..shader = _gradient.createShader(rect)
+        ..shader = _cachedShader!
         ..maskRect = offset & size
         ..blendMode = BlendMode.srcIn;
       context.pushLayer(layer!, super.paint, offset);
