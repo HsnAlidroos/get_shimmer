@@ -31,7 +31,7 @@
     <!-- Left content -->
     <g transform="translate(40,28)">
       <text x="0" y="0" font-family="Segoe UI, Roboto, Arial, sans-serif" font-size="48" font-weight="700" fill="#ffffff">GetShimmer</text>
-      <text x="0" y="60" font-family="Segoe UI, Roboto, Arial, sans-serif" font-size="20" fill="#cfe8ff">Fast, lightweight GetX shimmer with shader caching</text>
+      <text x="0" y="60" font-family="Segoe UI, Roboto, Arial, sans-serif" font-size="20" fill="#cfe8ff">Stable, lightweight GetX shimmer using native ShaderMask</text>
 
       <g transform="translate(0,100)">
         <!-- example placeholder -->
@@ -44,7 +44,7 @@
         </g>
       </g>
 
-      <text x="0" y="240" font-family="Segoe UI, Roboto, Arial, sans-serif" font-size="14" fill="#9fb7d6">⚡ Shader caching • 🎯 Zero memory leaks • 🔄 Multi-instance support</text>
+      <text x="0" y="240" font-family="Segoe UI, Roboto, Arial, sans-serif" font-size="14" fill="#9fb7d6">🛡️ Stable &amp; reliable • ⚡ Zero overhead • 🔄 Multi-instance support</text>
 
       <g transform="translate(0,274)">
         <rect x="0" y="0" width="160" height="40" rx="8" fill="url(#accent)"/>
@@ -54,7 +54,7 @@
 
     <!-- Right column: links & meta -->
     <g transform="translate(640,28)">
-      <text x="0" y="0" font-family="Segoe UI, Roboto, Arial, sans-serif" font-size="20" fill="#cfe8ff">v0.0.7</text>
+      <text x="0" y="0" font-family="Segoe UI, Roboto, Arial, sans-serif" font-size="20" fill="#cfe8ff">v0.0.8</text>
       <text x="0" y="36" font-family="Segoe UI, Roboto, Arial, sans-serif" font-size="13" fill="#9fb7d6">https://pub.dev/packages/get_shimmer</text>
       <text x="0" y="62" font-family="Segoe UI, Roboto, Arial, sans-serif" font-size="13" fill="#9fb7d6">https://github.com/HsnAlidroos/get_shimmer</text>
 
@@ -71,5 +71,5 @@
   </g>
 
   <!-- Footer small text -->
-  <text x="80" y="600" font-family="Segoe UI, Roboto, Arial, sans-serif" font-size="12" fill="#7fa6cf">GetShimmer v0.0.7 — Performance optimized shimmer placeholders for Flutter</text>
+  <text x="80" y="600" font-family="Segoe UI, Roboto, Arial, sans-serif" font-size="12" fill="#7fa6cf">GetShimmer v0.0.8 — Stable shimmer placeholders for Flutter using native ShaderMask</text>
 </svg>
