@@ -5,7 +5,6 @@ library get_shimmer;
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:flutter/scheduler.dart';
 
 /// An enum defines all supported directions of shimmer effect
 enum ShimmerDirection { ltr, rtl, ttb, btt }

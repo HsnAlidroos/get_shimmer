@@ -15,13 +15,12 @@ hood to render an animated gradient over a child widget.
 
 ## Features
 
-- ✨ Shimmer effect using `ShaderMask` and `AnimationController`
+- ✨ Shimmer effect using Flutter's native `ShaderMask` widget
 - 🎮 Uses `Get.put` for controller lifecycle, keeping widget code concise
 - 🔄 Supports multiple shimmer directions: `ltr`, `rtl`, `ttb`, `btt`
+- 🛡️ **Stable & reliable** - No layer composition conflicts
 - ⚡ **Performance optimized**:
-  - Shader caching to reduce GPU work
-  - Repaint boundary isolation
-  - Proper ticker disposal (no memory leaks)
+  - Uses `GetSingleTickerProviderStateMixin` for proper animation lifecycle
   - Zero overhead when `enabled: false`
 - 🎯 Multiple independent shimmer instances supported
 
@@ -31,7 +30,7 @@ Add `get_shimmer` to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  get_shimmer: ^0.0.7
+  get_shimmer: ^0.0.8
 ```
 
 Then import it:

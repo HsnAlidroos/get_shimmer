@@ -1,3 +1,12 @@
+## 0.0.8
+* 🔧 **Breaking fix**: Replaced custom `RenderProxyBox` with Flutter's native `ShaderMask`
+  - Fixes `OffsetLayer` type casting errors
+  - Eliminates layer composition conflicts
+  - More stable and maintainable
+* 🧹 Simplified `GetShimmerController` using `GetSingleTickerProviderStateMixin`
+* 📉 Reduced code complexity (~60 lines removed)
+* 🗑️ Removed unused `flutter/rendering.dart` import
+
 ## 0.0.7
 * ⚡ Performance optimizations:
   - Shader caching to reduce GPU work per frame
